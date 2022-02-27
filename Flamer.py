@@ -4,7 +4,7 @@ from time import sleep
 # Instânciando as classes que manuzeiam o bot
 from modules.twitterAuth import *
 from modules.twitterHandler import *
-from modules.analizeEmotions import *
+from modules.analyzeEmotions import *
 from modules.insultingHandler import *
 
 TwitterAPI = TwitterAuth().getAPI()
@@ -18,7 +18,9 @@ Insultador = InsultingHandler()
 class Flamer(tweepy.Stream):
     def on_status(self, status):
         # Verifica se o tweet é um retweet
-        emocao = str(TweetAnalizer().analize(status))
+        if status.retweeted_status:
+            return
+        emocao = str(TweetAnalyzer().analyze(status))
         xingamento = Insultador.getInsult(emocao)
         Twitter.reply(status, xingamento)
         Twitter.favorite(status)

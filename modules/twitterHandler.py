@@ -33,7 +33,7 @@ class TwitterHandler:
         return True
     
     def reply(self, tweet, text):
-        print("Respondendo a: " + str(tweet.id))
+        print("Respondendo a: " + str(tweet.text))
         self.api.update_status(status=text, in_reply_to_status_id=str(tweet.id), auto_populate_reply_metadata=True)
         print("Respondido: " + tweet.text)
         return True
@@ -45,7 +45,7 @@ class TwitterHandler:
         return True
     
     def replyWithMedia(self, tweet, text, media):
-        print("Respondendo a: " + str(tweet.id))
+        print("Respondendo a: " + str(tweet.text))
         self.api.update_status_with_media(status=text, in_reply_to_status_id=str(tweet.id), auto_populate_reply_metadata=True, filename=media)
         print("Respondido: " + tweet.text)
         return True
