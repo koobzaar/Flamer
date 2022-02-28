@@ -1,3 +1,4 @@
+from os import stat
 import sys
 from time import sleep
 
@@ -17,7 +18,7 @@ Insultador = InsultingHandler()
 # Listener que aguarda os tweets, analisa as emoções e responde.
 class Flamer(tweepy.Stream):
     def on_status(self, status):
-        if str(status.author.id) == os.getenv('TWITTER_TARGET_USER_ID'):
+        if status.text.startswith("RT @") == False and str(status.author.id) == os.getenv('TWITTER_TARGET_USER_ID'):
             self.Tweet(status)
         else:
             return True
