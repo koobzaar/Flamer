@@ -17,14 +17,18 @@ Insultador = InsultingHandler()
 # Listener que aguarda os tweets, analisa as emoções e responde.
 class Flamer(tweepy.Stream):
     def on_status(self, status):
-        # Verifica se o tweet é um retweet
-        if status.retweeted_status:
-            return
-        emocao = str(TweetAnalyzer().analyze(status))
-        xingamento = Insultador.getInsult(emocao)
-        Twitter.reply(status, xingamento)
-        Twitter.favorite(status)
+        if str(status.author.id) == os.getenv('TWITTER_TARGET_USER_ID'):
+            self.Tweet(status)
+        else:
+            return True
         sleep(2)
+        
+    def Tweet(self, status):
+            emocao = str(TweetAnalyzer().analyze(status))
+            xingamento = Insultador.getInsult(emocao)
+            Twitter.reply(status, xingamento)
+            Twitter.favorite(status)
+            print("Tweeted: " + status.text)
 
     def on_error(self, status_code):
         if status_code == 420:
